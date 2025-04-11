@@ -16,7 +16,7 @@ body {
 
 header {
   width: 100%;
-  background-color: #424242 ;
+  background-color: #424242;
   color: white;
   padding: 15px;
   display: flex;
@@ -85,30 +85,33 @@ main {
   align-items: center;
   padding: 20px;
   width: 90%;
-  max-width: 600px;
+  max-width: 1000px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+/* Filter Section */
+#filter-section {
   width: 100%;
-  gap: 15px;
-}
-
-label {
-  margin-top: 10px;
-}
-
-input {
-  padding: 12px;
-  margin: 8px 0;
-  width: 100%;
-  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f4f4f4;
   border-radius: 5px;
+}
+
+#filter-section label {
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+#filter-section select {
+  padding: 8px;
+  margin-right: 15px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 #restaurant-list, #menu {
@@ -212,7 +215,6 @@ input[type="email"], input[type="password"], input[type="text"] {
   }
   #signup-button {
     width: auto;
-
   }
 }
 
@@ -312,4 +314,66 @@ dialog#restaurant-modal {
 
 dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* General layout for the main content */
+#content-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Restaurant list section */
+#restaurant-list {
+  width: 65%;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* Map section */
+#map-section {
+  flex: 1;
+  height: 500px;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+/* Optional: Styling for restaurant list items */
+#restaurants {
+  list-style-type: none;
+  padding: 0;
+}
+
+#restaurants li {
+  cursor: pointer;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+}
+
+#restaurants li:hover {
+  background-color: #ddd;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  #content-container {
+    flex-direction: column;
+  }
+
+  #restaurant-list,
+  #map-section {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  #filter-section {
+    width: 100%; /* Make the filter section full-width on mobile */
+  }
 }

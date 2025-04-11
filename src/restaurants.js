@@ -10,34 +10,80 @@ document.addEventListener("DOMContentLoaded", function () {
   const weeklyMenuButton = document.getElementById("weekly-menu-button");
   const dailyMenuSection = document.getElementById("daily-menu-section");
   const weeklyMenuSection = document.getElementById("weekly-menu-section");
-  const apiBaseUrl = "https://media2.edu.metropolia.fi/restaurant/api/v1"; // Your API base URL
-  let currentRestaurantId = null; // To track the selected restaurant ID
+  const apiBaseUrl = "https://media2.edu.metropolia.fi/restaurant/api/v1";
+  let currentRestaurantId = null;
 
-  // Fetch the list of restaurants
+  // Fetch and filter restaurants
+  let allRestaurants = [];
+
   async function fetchRestaurants() {
     try {
       const response = await fetch(`${apiBaseUrl}/restaurants`);
-      if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
       const data = await response.json();
-      renderRestaurants(data);
+      allRestaurants = data;
+      renderRestaurants(allRestaurants); // Initially render all restaurants
+      updateMap(allRestaurants); // Immediately update the map with all restaurants
+      populateFilters(data); // Populate filters
     } catch (error) {
       console.error("Error fetching restaurants:", error);
     }
   }
 
+  // Populate filter dropdowns dynamically from restaurant data
+  function populateFilters(restaurants) {
+    const cityFilter = document.getElementById("city-filter");
+    const companyFilter = document.getElementById("company-filter");
+
+    const cities = [...new Set(restaurants.map(r => r.city))]; // Unique cities
+    const companies = [...new Set(restaurants.map(r => r.company))]; // Unique companies
+
+    cities.forEach(city => {
+      const option = document.createElement("option");
+      option.value = city;
+      option.textContent = city;
+      cityFilter.appendChild(option);
+    });
+
+    companies.forEach(company => {
+      const option = document.createElement("option");
+      option.value = company;
+      option.textContent = company;
+      companyFilter.appendChild(option);
+    });
+
+    // Event listeners for filtering
+    cityFilter.addEventListener("change", filterRestaurants);
+    companyFilter.addEventListener("change", filterRestaurants);
+  }
+
+  // Render restaurants based on filters
   function renderRestaurants(restaurants) {
     restaurantsList.innerHTML = "";
-    restaurants.forEach((restaurant) => {
+    restaurants.forEach(restaurant => {
       const li = document.createElement("li");
       li.textContent = restaurant.name;
-      li.addEventListener("click", () => openModal(restaurant._id)); // make sure _id exists
+      li.addEventListener("click", () => openModal(restaurant._id));
       restaurantsList.appendChild(li);
     });
   }
 
-  // Fetch restaurant details (e.g., name, address)
+  // Filter restaurants based on selected city and company
+  function filterRestaurants() {
+    const cityFilter = document.getElementById("city-filter").value;
+    const companyFilter = document.getElementById("company-filter").value;
+
+    const filteredRestaurants = allRestaurants.filter(r => {
+      const matchesCity = cityFilter ? r.city === cityFilter : true;
+      const matchesCompany = companyFilter ? r.company === companyFilter : true;
+      return matchesCity && matchesCompany;
+    });
+
+    renderRestaurants(filteredRestaurants);
+    updateMap(filteredRestaurants); // Update the map with filtered restaurants
+  }
+
+  // Fetch restaurant details
   async function fetchRestaurantDetails(restaurantId) {
     try {
       const url = `${apiBaseUrl}/restaurants/${restaurantId}`;
@@ -70,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Fetch and display the weekly menu
   async function fetchWeeklyMenu(restaurantId, lang = "en") {
     try {
       const response = await fetch(`${apiBaseUrl}/restaurants/weekly/${restaurantId}/${lang}`);
@@ -149,8 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Display restaurant details
-    document.getElementById("restaurant-name").textContent = restaurant.name;
-    document.getElementById("restaurant-address").textContent = restaurant.address;
+    restaurantName.textContent = restaurant.name;
+    restaurantAddress.textContent = restaurant.address;
     document.getElementById("restaurant-postalCode").textContent = restaurant.postalCode || "N/A";
     document.getElementById("restaurant-city").textContent = restaurant.city || "N/A";
     document.getElementById("restaurant-phone").textContent = restaurant.phone || "N/A";
@@ -184,6 +231,42 @@ document.addEventListener("DOMContentLoaded", function () {
   closeModalButton.addEventListener("click", () => {
     modal.close();
   });
+
+  // Leaflet Map
+  let map;
+  let markers = [];
+
+  function initMap() {
+    map = L.map('map').setView([60.1699, 24.9384], 13); // Default location: Helsinki
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+  }
+
+  function updateMap(restaurants) {
+    // Clear existing markers
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+
+    restaurants.forEach(restaurant => {
+      if (restaurant.location && restaurant.location.coordinates) {
+        const latitude = restaurant.location.coordinates[1]; // Latitude at index 1
+        const longitude = restaurant.location.coordinates[0]; // Longitude at index 0
+
+        const marker = L.marker([latitude, longitude]).addTo(map);
+        marker.bindPopup(`<b>${restaurant.name}</b><br>${restaurant.address}`);
+        markers.push(marker);
+      } else {
+        console.log("Skipping restaurant due to missing coordinates:", restaurant.name);
+      }
+    });
+  }
+
+
+
+  // Initialize the map on page load
+  initMap();
 
   // Fetch restaurants on page load
   fetchRestaurants();

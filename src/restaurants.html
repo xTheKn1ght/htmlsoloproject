@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,8 +7,13 @@
   <title>Student Restaurants</title>
   <script src="restaurants.js" defer></script>
   <link rel="stylesheet" href="styles.css">
-</head>
 
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
 <body>
   <header>
     <h1>Student Restaurants</h1>
@@ -18,12 +22,60 @@
   </header>
 
   <main>
+    <!-- Filter Section -->
+    <section id="filter-section">
+      <h2>Filter Restaurants</h2>
+      <label for="city-filter">City:</label>
+      <select id="city-filter">
+        <option value="">All Cities</option>
+        <!-- Cities will be dynamically populated -->
+      </select>
+
+      <label for="company-filter">Service Provider:</label>
+      <select id="company-filter">
+        <option value="">All Providers</option>
+        <!-- Providers will be dynamically populated -->
+      </select>
+    </section>
+
+    <!-- Restaurant List -->
     <section id="restaurant-list">
       <h2>Restaurants</h2>
       <ul id="restaurants">
         <!-- List of restaurants will be added here dynamically -->
       </ul>
     </section>
+
+    <!-- Map Container -->
+    <section id="map" style="height: 400px;"></section>
+
+    <!-- Modal for restaurant details -->
+    <dialog id="restaurant-modal">
+      <h2 id="restaurant-name"></h2>
+      <p><strong>Address:</strong> <span id="restaurant-address"></span></p>
+      <p><strong>Postal Code:</strong> <span id="restaurant-postalCode"></span></p>
+      <p><strong>City:</strong> <span id="restaurant-city"></span></p>
+      <p><strong>Phone:</strong> <span id="restaurant-phone"></span></p>
+      <p><strong>Company:</strong> <span id="restaurant-company"></span></p>
+
+      <section>
+        <button id="daily-menu-button">Today's Menu</button>
+        <button id="weekly-menu-button">Weekly Menu</button>
+      </section>
+
+      <section id="daily-menu-section">
+        <h3>Today's Menu</h3>
+        <div id="daily-menu-content"></div>
+      </section>
+
+      <section id="weekly-menu-section">
+        <h3>Weekly Menu</h3>
+        <div id="weekly-menu-content"></div>
+      </section>
+
+      <button id="closeModal">Close</button>
+    </dialog>
+
   </main>
 
   <dialog id="restaurant-modal">
@@ -52,5 +104,4 @@
     <button id="closeModal">Close</button>
   </dialog>
 </body>
-
 </html>
