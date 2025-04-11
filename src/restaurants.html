@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Restaurants</title>
+  <script src="main.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Student Restaurants</h1>
+    <button id="right-button" onclick="location.href='login.html'">Login</button>
+    <button id="left-button" onclick="location.href='index.html'">Go back</button>
+  </header>
+
+  <main>
+    <section id="restaurant-list">
+      <h2>Restaurants</h2>
+      <ul id="restaurants">
+        <!-- List of restaurants will be added here dynamically -->
+      </ul>
+    </section>
+  </main>
+
+  <dialog id="restaurant-modal">
+    <h2 id="restaurant-name"></h2>
+    <p><strong>Address:</strong> <span id="restaurant-address"></span></p>
+    <p><strong>Postal Code:</strong> <span id="restaurant-postalCode"></span></p>
+    <p><strong>City:</strong> <span id="restaurant-city"></span></p>
+    <p><strong>Phone:</strong> <span id="restaurant-phone"></span></p>
+    <p><strong>Company:</strong> <span id="restaurant-company"></span></p>
+
+    <section>
+      <button id="daily-menu-button">Today's Menu</button>
+      <button id="weekly-menu-button">Weekly Menu</button>
+    </section>
+
+    <section id="daily-menu-section">
+      <h3>Today's Menu</h3>
+      <div id="daily-menu-content"></div>
+    </section>
+
+    <section id="weekly-menu-section">
+      <h3>Weekly Menu</h3>
+      <div id="weekly-menu-content"></div>
+    </section>
+
+    <button id="closeModal">Close</button>
+  </dialog>
+</body>
+
+</html>

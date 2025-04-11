@@ -239,3 +239,77 @@ input[type="email"], input[type="password"], input[type="text"] {
 #get-started:hover {
   background-color: #4c4d64;
 }
+
+#restaurants li {
+  cursor: pointer;
+  padding: 0.5em;
+}
+
+#restaurants li.selected {
+  background-color: #d3e0ff;
+  font-weight: bold;
+}
+
+dialog#restaurant-modal {
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#restaurant-modal h2 {
+  margin-top: 0;
+}
+
+#restaurant-modal p {
+  margin: 5px 0;
+}
+
+#restaurant-modal button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  border: none;
+  background-color: #333;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#restaurant-modal button:hover {
+  background-color: #555;
+}
+
+/* Restaurant list */
+#restaurants li {
+  cursor: pointer;
+  margin-bottom: 5px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  list-style-type: none;
+}
+
+#restaurants li:hover {
+  background-color: #f0f0f0;
+}
+
+dialog#restaurant-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  border: none;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  z-index: 999;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
