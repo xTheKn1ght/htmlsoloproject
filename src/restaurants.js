@@ -1,3 +1,6 @@
+//AI HAS BEEN USED IN COMMENTING
+//AND A LITTLE BIT WITH TROUBLESHOOTING
+
 document.addEventListener("DOMContentLoaded", function () {
   const restaurantsList = document.getElementById("restaurants");
   const modal = document.getElementById("restaurant-modal");
